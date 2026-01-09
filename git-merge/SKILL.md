@@ -20,13 +20,17 @@ Automatically activate when the user:
 **ALWAYS use the script** - do NOT use manual git commands:
 
 ```bash
-bash skills/git-merge/scripts/safe_merge.sh <target-branch>
+bash skills/git-merge/scripts/safe_merge.sh [--push] <target-branch>
 ```
 
-Example:
+Options:
+- `--push` 合并后自动推送到远程分支
+
+Examples:
 ```bash
 bash skills/git-merge/scripts/safe_merge.sh main
 bash skills/git-merge/scripts/safe_merge.sh develop
+bash skills/git-merge/scripts/safe_merge.sh --push main
 ```
 
 ## Safety Guarantees
@@ -35,8 +39,9 @@ bash skills/git-merge/scripts/safe_merge.sh develop
 2. Stashes uncommitted changes if requested
 3. Verifies target branch exists
 4. Performs merge with clear output
-5. Always returns to original branch
+5. Always returns to original branch (even if push fails)
 6. Reports merge status clearly
+7. Optional `--push` flag for automated remote push
 
 ## Script Details
 

@@ -26,7 +26,45 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-TARGET_BRANCH="$1"
+TARGET_BRANCH=""
+AUTO_PUSH=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --push)
+            AUTO_PUSH=true
+            shift
+            ;;
+        -*)
+            error "未知参数: $1"
+            echo "Usage: $0 [--push] <target-branch>"
+            exit 1
+            ;;
+        *)
+            if [ -z "$TARGET_BRANCH" ]; then
+                TARGET_BRANCH="$1"
+            else
+                error "太多参数"
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+# Check if target branch is provided
+if [ -z "$TARGET_BRANCH" ]; then
+    error "Usage: $0 [--push] <target-branch>"
+    echo ""
+    echo "Options:"
+    echo "  --push    合并后自动推送到远程分支"
+    echo ""
+    echo "Examples:"
+    echo "  $0 main"
+    echo "  $0 --push develop"
+    exit 1
+fi
 
 # Get current branch
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -104,14 +142,27 @@ fi
 echo ""
 
 # Push to remote if needed
-read -p "是否推送到远程仓库 '$TARGET_BRANCH'? (y/n): " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    step "推送到远程 '$TARGET_BRANCH'..."
+if [ "$AUTO_PUSH" = true ]; then
+    step "自动推送到远程 '$TARGET_BRANCH'..."
     if git push origin "$TARGET_BRANCH"; then
         info "推送成功 ✓"
     else
         error "推送失败"
+        # Still return to original branch before exiting
+        step "返回原分支 '$CURRENT_BRANCH'..."
+        git checkout "$CURRENT_BRANCH"
+        exit 1
+    fi
+else
+    read -p "是否推送到远程仓库 '$TARGET_BRANCH'? (y/n): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        step "推送到远程 '$TARGET_BRANCH'..."
+        if git push origin "$TARGET_BRANCH"; then
+            info "推送成功 ✓"
+        else
+            error "推送失败"
+        fi
     fi
 fi
 echo ""
