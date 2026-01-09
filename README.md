@@ -78,12 +78,12 @@ new-skill/
 
 欢迎贡献！如果你有新的技能想法、改进脚本，或发现了 bug，请随时提交 Issue 或 Pull Request。
 
-
-
-> Made with ❤️ and [contrib.rocks](https://contrib.rocks)
+<a href="https://github.com/ogromwang/skills/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ogromwang/skills" />
+</a>
 
 🌟 **Star 趋势**：  
-[![GitHub stars](https://img.shields.io/github/stars/ogromwang/skills?label=Stars&logo=github)](https://github.com/ogromwang/skills/stargazers)  
+[![GitHub stars](https://img.shields.io/github/stars/ogromwang/skills?label=Stars&logo=github)](https://github.com/ogromwang/skills/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/ogromwang/skills?label=Forks&logo=github)](https://github.com/ogromwang/skills/network/members)
 
 ---
